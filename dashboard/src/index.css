@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* ================================ */
+/*        CUSTOM TOAST (NO ICON)    */
+/* ================================ */
+
+.custom-toast {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.custom-toast > div {
+  background: #111827 !important;       /* bg-gray-900 */
+  color: #f3f4f6 !important;            /* text-gray-100 */
+  border-radius: 10px;
+  border: 1px solid #1f2937;
+  padding: 12px 16px;
+  position: relative;
+  overflow: hidden;
+
+  /* BETTER ALIGNMENT TANPA ICON */
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* PROGRESS BAR */
+.custom-toast > div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+  animation: toast-progress 4s linear forwards;
+}
+
+@keyframes toast-progress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+/* ANIMASI */
+.custom-toast[data-state="mounted"] > div {
+  animation: toast-enter 0.25s ease-out forwards;
+}
+.custom-toast[data-state="unmounted"] > div {
+  animation: toast-exit 0.25s ease-in forwards;
+}
+
+@keyframes toast-enter {
+  from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes toast-exit {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-10px) scale(0.95); }
+}
