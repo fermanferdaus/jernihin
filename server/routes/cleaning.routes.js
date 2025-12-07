@@ -1,15 +1,13 @@
 import express from "express";
 import {
   getCleaningStatus,
-  startCleaning,
-  stopCleaning,
+  updateCleaning,
 } from "../controllers/cleaning.controller.js";
 
 const router = express.Router();
 
 // PUBLIC — digunakan ESP32
+router.post("/update", updateCleaning);
 router.get("/status", getCleaningStatus);
-router.post("/start", startCleaning);
-router.post("/stop", stopCleaning);
 
 export default router;

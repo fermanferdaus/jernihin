@@ -7,7 +7,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", auth, getSchedule);
+router.get("/", getSchedule);
 router.put("/", auth, updateSchedule);
 
 export default router;

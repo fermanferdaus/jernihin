@@ -4,7 +4,7 @@ import db from "../config/db.js";
 export const getManualControl = async (req, res, next) => {
   try {
     const [rows] = await db.query(
-      "SELECT * FROM tb_kontrol_manual WHERE id = 1"
+      "SELECT status_manual FROM tb_kontrol_manual WHERE id = 1"
     );
     res.json({ success: true, data: rows[0] });
   } catch (err) {
