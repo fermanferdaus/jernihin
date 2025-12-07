@@ -7,8 +7,8 @@ const API = import.meta.env.VITE_API_URL;
 
 export default function EditJadwal() {
   const [jam, setJam] = useState("00:00");
-  const [tipe, setTipe] = useState("harian");
-
+  const [tipe, setTipe] = useState("Harian");
+  const [hari, setHari] = useState("Senin");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -27,8 +27,9 @@ export default function EditJadwal() {
       const data = await res.json();
 
       if (data.data) {
-        setJam(data.data.jam); // format "HH:MM"
+        setJam(data.data.jam);
         setTipe(data.data.tipe_pengulangan);
+        if (data.data.hari) setHari(data.data.hari);
       }
     } catch (err) {
       console.error("Error fetching schedule:", err);
@@ -48,7 +49,7 @@ export default function EditJadwal() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ jam, tipe_pengulangan: tipe }),
+        body: JSON.stringify({ jam, tipe_pengulangan: tipe, hari }), // <-- kirim hari
       });
 
       const data = await res.json();
@@ -84,16 +85,32 @@ export default function EditJadwal() {
             <select
               value={tipe}
               onChange={(e) => setTipe(e.target.value)}
-              className="
-                bg-gray-800 text-gray-200 p-2 rounded-md 
-                border border-gray-700 focus:border-blue-500
-              "
+              className="bg-gray-800 text-gray-200 p-2 rounded-md border border-gray-700 focus:border-blue-500"
             >
               <option value="Harian">Harian</option>
               <option value="Mingguan">Mingguan</option>
-              <option value="Bulanan">Bulanan</option>
             </select>
           </div>
+
+          {/* HARI (muncul hanya saat Mingguan) */}
+          {tipe === "Mingguan" && (
+            <div className="flex flex-col">
+              <label className="text-gray-300 mb-1">Pilih Hari</label>
+              <select
+                value={hari}
+                onChange={(e) => setHari(e.target.value)}
+                className="bg-gray-800 text-gray-200 p-2 rounded-md border border-gray-700 focus:border-blue-500"
+              >
+                <option>Senin</option>
+                <option>Selasa</option>
+                <option>Rabu</option>
+                <option>Kamis</option>
+                <option>Jumat</option>
+                <option>Sabtu</option>
+                <option>Minggu</option>
+              </select>
+            </div>
+          )}
 
           {/* BUTTON */}
           <div className="flex justify-end gap-3 pt-4">
@@ -108,10 +125,9 @@ export default function EditJadwal() {
             <button
               type="submit"
               disabled={saving}
-              className={`
-                px-4 py-2 text-white rounded-md
-                ${saving ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-500"}
-              `}
+              className={`${
+                saving ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-500"
+              } px-4 py-2 text-white rounded-md`}
             >
               {saving ? "Menyimpan..." : "Simpan"}
             </button>

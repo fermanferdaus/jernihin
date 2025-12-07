@@ -129,10 +129,19 @@ export default function Jadwal() {
               <span className="text-gray-400">Jam:</span>{" "}
               <span className="font-medium">{schedule?.jam}</span>
             </p>
+
             <p>
               <span className="text-gray-400">Pengulangan:</span>{" "}
               <span className="font-medium">{schedule?.tipe_pengulangan}</span>
             </p>
+
+            {/* TAMPILKAN HARI JIKA MINGGUAN */}
+            {schedule?.tipe_pengulangan === "Mingguan" && (
+              <p>
+                <span className="text-gray-400">Hari:</span>{" "}
+                <span className="font-medium">{schedule?.hari || "-"}</span>
+              </p>
+            )}
           </div>
         </div>
 
